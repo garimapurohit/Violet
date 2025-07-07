@@ -71,7 +71,7 @@ header {
   color: white;
   text-decoration: none;
   font-size: 1.5rem;
-  margin-left: 2rem; /* Add some space between links */
+  margin-left: 2rem; 
 }
 
 .logo {
@@ -80,7 +80,6 @@ header {
   color: #ffffff;
 }
 
-/* Adjust the button styling if needed */
 .navbar button {
   font-family: no2;
   background-color: whitesmoke;
@@ -387,7 +386,7 @@ footer {
 }
 .chat-icon img {
   margin-top: 5px;
-  width: 50px; /* or any custom size */
+  width: 50px; 
   height: 50px;
   object-fit: contain;
 }
