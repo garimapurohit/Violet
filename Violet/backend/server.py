@@ -8,9 +8,12 @@ load_dotenv()
 
 app = Flask(__name__)
 CORS(app)
-API_KEY = os.getenv("API_KEY")  # your API key must be set in .env
+API_KEY = os.getenv("API_KEY")  
 MODEL = "deepseek/deepseek-chat"
 API_URL = "https://openrouter.ai/api/v1/chat/completions"
+#  @app.route('/')
+# def home():
+#     return 'Flask backend is running!'
 
 HEADERS = {
     "Authorization": f"Bearer {API_KEY}",
