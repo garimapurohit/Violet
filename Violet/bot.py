@@ -1,7 +1,7 @@
 import requests
 import json
 
-API_KEY = "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"
+API_KEY = "YOUR API KEY HERE"  # Replace with your actual API key
 MODEL = "deepseek/deepseek-chat"
 API_URL = "https://openrouter.ai/api/v1/chat/completions"
 
