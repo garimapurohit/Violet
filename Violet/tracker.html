@@ -9,8 +9,66 @@
   <script src="https://cdn.jsdelivr.net/npm/date-fns@2.30.0/dist/date-fns.min.js"></script>
   
   <style>
+    @font-face {
+        font-family: face;
+        src: url(fonts/Fontspring-DEMO-theseasons-reg.otf);
+      }
+      @font-face {
+        font-family: season;
+        src: url(fonts/Fontspring-DEMO-theseasons-it.otf);
+      }
+      @font-face {
+        font-family: no2;
+        src: url(fonts/NotCourierSans.otf);
+      }
 
-    .quote-block h1 {
+      body,
+      html {
+        margin: 0;
+        padding: 0;
+      }
+      header {
+        opacity: 1;
+        position: fixed;
+      }
+      #navbar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        transition: top 0.3s;
+        font-family: no2;
+      }
+
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 2rem;
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      .nav-link {
+        display: flex;
+        align-items: center;
+      }
+
+      .nav-link {
+        color: white;
+        text-decoration: none;
+        font-size: 1.5rem;
+        margin-left: 2rem;
+      }
+
+      .logo {
+        font-family: season;
+        font-size: 4rem;
+        color: #ffffff;
+        margin-left: 0;
+      }
+  .quote-block h1 {
   color: #e60000;
   font-family: 'Playfair Display', serif;
   font-size: 10em; 
@@ -211,6 +269,11 @@
   </style>
 </head>
 <body>
+    <header>
+    <nav id="navbar" class="navbar">
+      <a href="index.html" class="nav-link logo" style="font-size: 4rem">Violet</a>
+    </nav>
+  </header>
   <div class="container">
     <div class="left">
       <img src="pictures/ovary.png" alt="ovary icon" style="width: 450px; height: auto; margin-bottom: 5px;">
