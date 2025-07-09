@@ -5,7 +5,27 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Period Tracker UI</title>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/date-fns@2.30.0/dist/date-fns.min.js"></script>
+  
   <style>
+
+    .quote-block h1 {
+  color: #e60000;
+  font-family: 'Playfair Display', serif;
+  font-size: 10em; /* Increased from 3em */
+  margin-bottom: 20px;
+  font-weight: 700;
+}
+
+.quote-block p {
+  color: #e60000;
+  font-family: 'Playfair Display', serif;
+  font-size: 8em;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
     * {
       box-sizing: border-box;
       margin: 0;
@@ -193,9 +213,11 @@
 <body>
   <div class="container">
     <div class="left">
-      <img class="main-icon" src="pictures/ovary.png" alt="Moon Icon" />
-      <h1>Period App UI Kit</h1>
-      <p>Designed in Figma – Mobile-friendly<br>Includes: onboarding, calendar, symptom & mood tracking</p>
+      <img src="pictures/ovary.png" alt="ovary icon" style="width: 450px; height: auto; margin-bottom: 5px;">
+      <div class="quote-block">
+        <h1>GARNET</h1>
+        <p>ANYTHING YOU CAN DO,<br>I CAN DO BLEEDING</p>
+      </div>
     </div>
     <div class="right">
       <div class="header">
@@ -262,18 +284,15 @@
         }
       });
 
-      const lastStartDateStr = localStorage.getItem("lastStartDate");
       const lastEndDateStr = localStorage.getItem("lastEndDate");
-      if (lastStartDateStr && lastEndDateStr) {
-        const lastStart = new Date(lastStartDateStr);
+      if (lastEndDateStr) {
         const lastEnd = new Date(lastEndDateStr);
-        const lastLength = dateFns.differenceInCalendarDays(lastEnd, lastStart);
-        const predictedEnd = dateFns.addDays(today, lastLength);
-        endDate = predictedEnd;
-        localStorage.setItem("lastEndDate", predictedEnd.toISOString());
+        const lastLength = dateFns.differenceInCalendarDays(lastEnd, today);
+        endDate = dateFns.addDays(today, lastLength);
+        localStorage.setItem("lastEndDate", endDate.toISOString());
         markRange(startDate, endDate);
-        estimateNextPeriod();
       }
+      estimateNextPeriod();
     }
 
     function createCalendar() {
@@ -369,7 +388,6 @@
         nextPeriodText.innerText = `Next period estimated on ${formattedNext}`;
       }
 
-      // Mark predicted date if in current calendar view
       const predictedStr = nextStart.toISOString().split('T')[0];
       const predictedCell = document.querySelector(`.calendar-cell[data-date='${predictedStr}']`);
       if (predictedCell) predictedCell.classList.add("predicted-start");
