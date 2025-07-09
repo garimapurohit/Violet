@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Period Tracker UI</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Nunito', sans-serif;
+    }
+
+    html, body {
+      height: 100%;
+      width: 100%;
+    }
+
+    body {
+      background-color: #1e1e1e;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container {
+      background-color: #fdd1dc;
+      border-radius: 15px;
+      display: flex;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .left {
+      width: 50%;
+      background-color: #f3a7b2;
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .left img.main-icon {
+      width: 320px;
+      height: auto;
+      margin-bottom: 30px;
+    }
+
+    .left h1 {
+      color: #e91e63;
+      font-size: 24px;
+      margin-bottom: 15px;
+    }
+
+    .left p {
+      font-size: 16px;
+      color: #333;
+    }
+
+    .right {
+      width: 50%;
+      padding: 30px;
+      background-color: #fff0f5;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .quote {
+      font-style: italic;
+      margin-bottom: 20px;
+      color: #444;
+    }
+
+    .countdown {
+      background: #ffe6ec;
+      padding: 20px;
+      border-radius: 15px;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .countdown h2 {
+      font-size: 32px;
+      color: #333;
+    }
+
+    .countdown p {
+      margin-top: 10px;
+      color: #666;
+    }
+
+    .countdown button {
+      background-color: #e91e63;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 20px;
+      margin-top: 15px;
+      cursor: pointer;
+    }
+
+    .stats {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .stat {
+      background-color: #ffdbe5;
+      border-radius: 12px;
+      padding: 15px;
+      flex: 1;
+      text-align: center;
+    }
+
+    .stat h3 {
+      font-size: 20px;
+      color: #333;
+    }
+
+    .stat p {
+      font-size: 14px;
+      color: #666;
+      margin-top: 5px;
+    }
+
+    .month-display {
+      text-align: center;
+      font-size: 20px;
+      margin-bottom: 10px;
+      color: #444;
+    }
+
+    .calendar-header {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      font-weight: bold;
+      margin-bottom: 5px;
+      text-align: center;
+    }
+
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 5px;
+    }
+
+    .calendar-cell {
+      padding: 10px;
+      text-align: center;
+      background-color: #ffe6ec;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .calendar-cell.marked {
+      background-color: #e91e63;
+      color: white;
+    }
+
+    .calendar-cell.start-period {
+      background-color: #ff4081;
+      color: white;
+      font-weight: bold;
+    }
+
+    .calendar-cell.end-period {
+      background-color: #c2185b;
+      color: white;
+      font-weight: bold;
+    }
+    .calendar-nav {
+      display: flex;
+      justify-content: space-between;
+      margin: 10px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="left">
+      <img class="main-icon" src="pictures/ovary.png" alt="Moon Icon" />
+      <h1>Period App UI Kit</h1>
+      <p>Designed in Figma – Mobile-friendly<br>Includes: onboarding, calendar, symptom & mood tracking</p>
+    </div>
+    <div class="right">
+      <div class="header">
+        <h3>Hello, Friend!</h3>
+        <span>Profile</span>
+      </div>
+      <div class="quote">
+        “Give yourself permission to rest. Peace is a right, not a privilege.”
+      </div>
+      <div class="countdown">
+        <h2 id="days-left">12 Days</h2>
+        <p id="next-period-text">Until your next period</p>
+        <button onclick="startPeriod()">Start Period</button>
+      </div>
+      <div class="stats">
+        <div class="stat">
+          <h3>25%</h3>
+          <p>Fertility Chance</p>
+        </div>
+        <div class="stat">
+          <h3>14 Days</h3>
+          <p>Cycle Day</p>
+        </div>
+        <div class="stat">
+          <h3>24 Days</h3>
+          <p>Ovulation</p>
+        </div>
+      </div>
+      <div class="calendar-nav">
+        <button onclick="changeMonth(-1)">&lt; Prev</button>
+        <div class="month-display" id="monthDisplay"></div>
+        <button onclick="changeMonth(1)">Next &gt;</button>
+      </div>
+      <div class="calendar-header">
+        <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+      </div>
+      <div class="calendar-grid" id="calendar"></div>
+    </div>
+  </div>
+
+  <script>
+    let currentDate = new Date();
+    let startDate = null;
+    let endDate = null;
+
+    function startPeriod() {
+      const daysLeft = document.getElementById("days-left");
+      const nextPeriodText = document.getElementById("next-period-text");
+      daysLeft.innerText = "Period Started!";
+      alert("Select the end date of your period from the calendar.");
+
+      const today = new Date();
+      startDate = today;
+      endDate = null;
+
+      localStorage.setItem("lastStartDate", today.toISOString());
+
+      const allCells = document.querySelectorAll(".calendar-cell");
+      allCells.forEach(cell => {
+        cell.classList.remove("start-period", "end-period", "marked", "predicted-start");
+        const cellDate = new Date(cell.dataset.date);
+        if (cellDate.toDateString() === today.toDateString()) {
+          cell.classList.add("start-period");
+        }
+      });
+
+      const lastStartDateStr = localStorage.getItem("lastStartDate");
+      const lastEndDateStr = localStorage.getItem("lastEndDate");
+      if (lastStartDateStr && lastEndDateStr) {
+        const lastStart = new Date(lastStartDateStr);
+        const lastEnd = new Date(lastEndDateStr);
+        const lastLength = dateFns.differenceInCalendarDays(lastEnd, lastStart);
+        const predictedEnd = dateFns.addDays(today, lastLength);
+        endDate = predictedEnd;
+        localStorage.setItem("lastEndDate", predictedEnd.toISOString());
+        markRange(startDate, endDate);
+        estimateNextPeriod();
+      }
+    }
+
+    function createCalendar() {
+      const calendar = document.getElementById("calendar");
+      const monthDisplay = document.getElementById("monthDisplay");
+      calendar.innerHTML = "";
+
+      const year = currentDate.getFullYear();
+      const month = currentDate.getMonth();
+
+      const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August",
+        "September", "October", "November", "December"];
+      monthDisplay.textContent = `${monthNames[month]} ${year}`;
+
+      const firstDay = new Date(year, month, 1);
+      const lastDay = new Date(year, month + 1, 0);
+      const startWeekday = firstDay.getDay();
+      const totalDays = lastDay.getDate();
+
+      for (let i = 0; i < startWeekday; i++) {
+        const emptyCell = document.createElement("div");
+        calendar.appendChild(emptyCell);
+      }
+
+      for (let day = 1; day <= totalDays; day++) {
+        const date = new Date(year, month, day);
+        const cell = document.createElement("div");
+        cell.classList.add("calendar-cell");
+        cell.textContent = day;
+        cell.dataset.date = date.toISOString().split('T')[0];
+        cell.addEventListener("click", () => handleDayClick(date, cell));
+        calendar.appendChild(cell);
+      }
+
+      restoreLastCycle();
+    }
+
+    function changeMonth(offset) {
+      currentDate.setMonth(currentDate.getMonth() + offset);
+      createCalendar();
+    }
+
+    function handleDayClick(date, cell) {
+      const allCells = document.querySelectorAll(".calendar-cell");
+      if (!startDate || (startDate && endDate)) {
+        startDate = date;
+        endDate = null;
+        allCells.forEach(c => c.classList.remove("start-period", "end-period", "marked"));
+        cell.classList.add("start-period");
+        localStorage.setItem("lastStartDate", date.toISOString());
+      } else if (date > startDate) {
+        endDate = date;
+        localStorage.setItem("lastEndDate", endDate.toISOString());
+        markRange(startDate, endDate);
+        estimateNextPeriod();
+      }
+    }
+
+    function markRange(start, end) {
+      const allCells = document.querySelectorAll(".calendar-cell");
+      allCells.forEach(c => {
+        const cDate = new Date(c.dataset.date);
+        c.classList.remove("start-period", "end-period", "marked", "predicted-start");
+        if (cDate.toDateString() === start.toDateString()) {
+          c.classList.add("start-period");
+        } else if (cDate.toDateString() === end.toDateString()) {
+          c.classList.add("end-period");
+        } else if (cDate > start && cDate < end) {
+          c.classList.add("marked");
+        }
+      });
+    }
+
+    function estimateNextPeriod() {
+      const nextPeriodText = document.getElementById("next-period-text");
+      const daysLeft = document.getElementById("days-left");
+
+      const lastStartDateStr = localStorage.getItem("lastStartDate");
+      const lastEndDateStr = localStorage.getItem("lastEndDate");
+      if (!lastStartDateStr || !lastEndDateStr) return;
+
+      const lastStartDate = new Date(lastStartDateStr);
+      const nextStart = dateFns.addDays(lastStartDate, 28);
+
+      const today = new Date();
+      const diff = dateFns.differenceInCalendarDays(nextStart, today);
+      const formattedNext = dateFns.format(nextStart, 'MMM d');
+
+      if (diff >= 0) {
+        daysLeft.innerText = `${diff} Days`;
+        nextPeriodText.innerText = `Until your next period on ${formattedNext}`;
+      } else {
+        nextPeriodText.innerText = `Next period estimated on ${formattedNext}`;
+      }
+
+      // Mark predicted date if in current calendar view
+      const predictedStr = nextStart.toISOString().split('T')[0];
+      const predictedCell = document.querySelector(`.calendar-cell[data-date='${predictedStr}']`);
+      if (predictedCell) predictedCell.classList.add("predicted-start");
+    }
+
+    function restoreLastCycle() {
+      const lastStartDateStr = localStorage.getItem("lastStartDate");
+      const lastEndDateStr = localStorage.getItem("lastEndDate");
+      if (!lastStartDateStr || !lastEndDateStr) return;
+
+      startDate = new Date(lastStartDateStr);
+      endDate = new Date(lastEndDateStr);
+      markRange(startDate, endDate);
+      estimateNextPeriod();
+    }
+
+    createCalendar();
+  </script>
+</body>
+</html>
