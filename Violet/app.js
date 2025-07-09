@@ -1,75 +1,66 @@
-const chatIcon = document.getElementById("chat-icon");
-const chatBox = document.getElementById("chat-box");
-const closeChat = document.getElementById("close-chat");
-const sendMessageBtn = document.getElementById("send-message");
-const chatMessages = document.querySelector(".chat-messages");
-const chatInput = document.getElementById("chat-message");
+document.addEventListener('DOMContentLoaded', function() {
+  // Get all elements
+  const chatIcon = document.getElementById("chat-icon");
+  const chatBox = document.getElementById("chat-box");
+  const closeChat = document.getElementById("close-chat");
+  const sendBtn = document.getElementById("send-message");
+  const chatInput = document.getElementById("chat-message");
+  const chatMessages = document.querySelector(".chat-messages");
 
-// State
-let messages = [];
+  // Toggle chat visibility
+  chatIcon.addEventListener('click', function() {
+    chatBox.classList.remove("hidden");
+    chatInput.focus();
+  });
 
-// Show chat window
-chatIcon.addEventListener("click", () => {
-  chatBox.classList.remove("hidden");
-  chatInput.focus();
-});
+  closeChat.addEventListener('click', function() {
+    chatBox.classList.add("hidden");
+  });
 
-// Close chat window
-closeChat.addEventListener("click", () => {
-  chatBox.classList.add("hidden");
-});
+  // Send message function
+  function sendMessage() {
+    const message = chatInput.value.trim();
+    if (!message) return;
 
-// Send user message
-sendMessageBtn.addEventListener("click", () => {
-  const userText = chatInput.value.trim();
-  if (!userText) return;
+    // Add user message
+    addMessage('user', message);
+    chatInput.value = '';
 
-  appendMessage("user", userText);
-  chatInput.value = "";
-  sendToBackend(userText);
-});
+    // Add temporary bot message
+    const botMessage = addMessage('assistant', '...');
 
-// Send on Enter key
-chatInput.addEventListener("keydown", (e) => {
-  if (e.key === "Enter") {
-    e.preventDefault();
-    sendMessageBtn.click();
-  }
-});
-
-// Append message to chat box
-function appendMessage(role, content) {
-  const message = document.createElement("div");
-  message.classList.add("message", role);
-  message.innerText = content;
-  chatMessages.appendChild(message);
-  chatMessages.scrollTop = chatMessages.scrollHeight;
-}
-
-// Send message to backend server
-function sendToBackend(userMessage) {
-  messages.push({ role: "user", content: userMessage });
-
-  fetch("http://localhost:5000/api/chat", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ messages: messages })
-  })
-    .then((res) => {
-      if (!res.ok) throw new Error("API request failed");
-      return res.json();
+    // Send to backend
+    fetch('http://127.0.0.1:5000/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        messages: [{ role: 'user', content: message }]
+      })
     })
-    .then((data) => {
-      const reply = data.reply;
-      messages.push({ role: "assistant", content: reply });
-      appendMessage("assistant", reply);
+    .then(response => response.json())
+    .then(data => {
+      // Update bot message
+      botMessage.textContent = data.success ? data.message : `Error: ${data.error}`;
     })
-    .catch((err) => {
-      console.error(err);
-      appendMessage("assistant", "⚠️ Oops! Something went wrong.");
+    .catch(error => {
+      botMessage.textContent = "Sorry, I can't connect right now";
+      console.error('Error:', error);
     });
-}
+  }
 
+  // Helper to add messages
+  function addMessage(sender, text) {
+    const div = document.createElement('div');
+    div.className = `message ${sender}`;
+    div.textContent = text;
+    chatMessages.appendChild(div);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+    return div;
+  }
 
+  // Event listeners
+  sendBtn.addEventListener('click', sendMessage);
+  chatInput.addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') sendMessage();
+  });
+});

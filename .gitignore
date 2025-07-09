@@ -9,3 +9,11 @@ __pycache__/
 node_modules/
 dist/
 .DS_Store
+
+# Ignore Python virtual env
+venv/
+__pycache__/
+
+# Ignore secrets
+.env
+*.env
