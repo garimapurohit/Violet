@@ -13,7 +13,7 @@ app = Flask(__name__)
 # Configure CORS to allow requests from frontend
 CORS(app, resources={
     r"/api/*": {
-        "origins": ["http://127.0.0.1:5500"],  # Your frontend URL
+        "origins": ["http://127.0.0.1:5500"],  
         "methods": ["POST", "OPTIONS"],
         "allow_headers": ["Content-Type"]
     }
@@ -67,7 +67,7 @@ def chat():
 
         # Call the AI API
         response = requests.post(API_URL, headers=HEADERS, json=payload)
-        response.raise_for_status()  # Raises exception for 4XX/5XX responses
+        response.raise_for_status()  
         
         # Parse and standardize the response
         api_response = response.json()

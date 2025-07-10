@@ -7,7 +7,6 @@ document.addEventListener('DOMContentLoaded', function() {
   const chatInput = document.getElementById("chat-message");
   const chatMessages = document.querySelector(".chat-messages");
 
-  // Toggle chat visibility
   chatIcon.addEventListener('click', function() {
     chatBox.classList.remove("hidden");
     chatInput.focus();
@@ -17,19 +16,15 @@ document.addEventListener('DOMContentLoaded', function() {
     chatBox.classList.add("hidden");
   });
 
-  // Send message function
   function sendMessage() {
     const message = chatInput.value.trim();
     if (!message) return;
 
-    // Add user message
     addMessage('user', message);
     chatInput.value = '';
 
-    // Add temporary bot message
     const botMessage = addMessage('assistant', '...');
 
-    // Send to backend
     fetch('http://127.0.0.1:5000/api/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -39,7 +34,6 @@ document.addEventListener('DOMContentLoaded', function() {
     })
     .then(response => response.json())
     .then(data => {
-      // Update bot message
       botMessage.textContent = data.success ? data.message : `Error: ${data.error}`;
     })
     .catch(error => {
@@ -47,8 +41,7 @@ document.addEventListener('DOMContentLoaded', function() {
       console.error('Error:', error);
     });
   }
-
-  // Helper to add messages
+// adding message
   function addMessage(sender, text) {
     const div = document.createElement('div');
     div.className = `message ${sender}`;
@@ -58,7 +51,6 @@ document.addEventListener('DOMContentLoaded', function() {
     return div;
   }
 
-  // Event listeners
   sendBtn.addEventListener('click', sendMessage);
   chatInput.addEventListener('keypress', function(e) {
     if (e.key === 'Enter') sendMessage();
