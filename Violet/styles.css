@@ -448,3 +448,29 @@ footer {
 #close-chat {
   cursor: pointer;
 }
+.login-container {
+  max-width: 350px;
+  margin: 100px auto;
+  padding: 2rem;
+  border-radius: 1rem;
+  background-color: #f8f0f8;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.login-container input {
+  width: 100%;
+  padding: 0.6rem;
+  margin: 0.5rem 0;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+}
+
+.login-container button {
+  width: 100%;
+  padding: 0.6rem;
+  background-color: #a14bc6;
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+}

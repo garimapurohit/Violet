@@ -1,0 +1,53 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Sign Up - Violet</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body { background: #ffc0cb; font-family: Nunito; display: flex; align-items: center; justify-content: center; height: 100vh; }
+    .auth-box { background: white; padding: 2rem; border-radius: 16px; width: 100%; max-width: 400px; text-align: center; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    input, button { width: 100%; padding: 0.75rem; margin: 0.5rem 0; border-radius: 8px; border: 1px solid #ccc; }
+    button { background-color: #d63384; color: white; font-weight: bold; border: none; }
+    a { color: #d63384; }
+  </style>
+  <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js"></script>
+</head>
+<body>
+  <div class="auth-box">
+    <h2>Sign up for Violet</h2>
+    <input type="email" id="email" placeholder="Email" />
+    <input type="password" id="password" placeholder="Password" />
+    <button onclick="signup()">Sign Up</button>
+    <p id="error-msg" style="color:red;"></p>
+    <p>Already have an account? <a href="login.html">Login</a></p>
+  </div>
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js';
+    import { getAuth, createUserWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js';
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyB0ihTMBQuCleUjg8a_rnpXrwmRCpu8I10",
+        authDomain: "violet-login-1d5c4.firebaseapp.com",
+        projectId: "violet-login-1d5c4",
+        storageBucket: "violet-login-1d5c4.appspot.com",
+        messagingSenderId: "538691687863",
+        appId: "1:538691687863:web:b417c6aba01dece48a4432"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    window.signup = () => {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      createUserWithEmailAndPassword(auth, email, password)
+        .then(() => {
+          alert("Signup successful! Redirecting...");
+          window.location.href = "index.html";
+        })
+        .catch(e => document.getElementById("error-msg").textContent = e.message);
+    };
+  </script>
+</body>
+</html>
