@@ -56,8 +56,8 @@ Encouraging users to become community members or volunteers to help spread aware
    ```bash
    git clone https://github.com/yourusername/violet.git
    cd violet
-2. Clone the repository:
-
+2. Clone the repository
+   ```bash
    pip install -r requirements.txt
 
    python server.py
