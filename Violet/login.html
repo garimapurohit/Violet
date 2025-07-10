@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -7,29 +8,33 @@
     body { background: #ffc0cb; font-family: Nunito; display: flex; align-items: center; justify-content: center; height: 100vh; }
     .auth-box { background: white; padding: 2rem; border-radius: 16px; width: 100%; max-width: 400px; text-align: center; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
     input, button { width: 100%; padding: 0.75rem; margin: 0.5rem 0; border-radius: 8px; border: 1px solid #ccc; }
-    button { background-color: #d63384; color: white; font-weight: bold; border: none; }
+    button { background-color: #d63384; color: white; font-weight: bold; border: none; cursor: pointer; }
     .google-btn { background: white; color: #d63384; border: 1px solid #d63384; display: flex; justify-content: center; align-items: center; gap: 0.5rem; }
     .google-btn img { width: 20px; }
     a { color: #d63384; }
   </style>
-  <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js"></script>
 </head>
 <body>
   <div class="auth-box">
     <h2>Login to Violet</h2>
     <input type="email" id="email" placeholder="Email" />
     <input type="password" id="password" placeholder="Password" />
-    <button onclick="login()">Login</button>
-    <button class="google-btn" onclick="googleLogin()">
+    <button id="login-btn">Login</button>
+    <button class="google-btn" id="google-login">
       <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google" /> Sign in with Google
     </button>
     <p id="error-msg" style="color:red;"></p>
     <p>Don't have an account? <a href="signup.html">Sign up</a></p>
   </div>
+
   <script type="module">
-    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js';
-    import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js';
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
+    import {
+      getAuth,
+      signInWithEmailAndPassword,
+      GoogleAuthProvider,
+      signInWithPopup
+    } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyB0ihTMBQuCleUjg8a_rnpXrwmRCpu8I10",
@@ -44,19 +49,31 @@
     const auth = getAuth(app);
     const provider = new GoogleAuthProvider();
 
-    window.login = () => {
+    // Login button
+    document.getElementById("login-btn").addEventListener("click", () => {
       const email = document.getElementById("email").value;
       const password = document.getElementById("password").value;
-      signInWithEmailAndPassword(auth, email, password)
-        .then(() => window.location.href = "index.html")
-        .catch(e => document.getElementById("error-msg").textContent = e.message);
-    };
+      const errorMsg = document.getElementById("error-msg");
 
-    window.googleLogin = () => {
+      signInWithEmailAndPassword(auth, email, password)
+        .then(() => {
+          window.location.href = "index.html";
+        })
+        .catch((error) => {
+          errorMsg.textContent = error.message;
+        });
+    });
+
+    // Google sign-in
+    document.getElementById("google-login").addEventListener("click", () => {
       signInWithPopup(auth, provider)
-        .then(() => window.location.href = "index.html")
-        .catch(e => document.getElementById("error-msg").textContent = e.message);
-    };
+        .then(() => {
+          window.location.href = "index.html";
+        })
+        .catch((error) => {
+          document.getElementById("error-msg").textContent = error.message;
+        });
+    });
   </script>
 </body>
 </html>
